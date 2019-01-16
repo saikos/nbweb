@@ -27,7 +27,7 @@ public class MessageDAOImpl implements MessageDAO {
     public Message getMessageById(long id) throws MessengerException {
         Message msg = DatabaseHelper.fetchMessageOrNull("select * from message where id = ?", id);
         if (msg == null) {
-            throw new RuntimeException("Invalid message id: " + id);
+            throw new MessengerException("Invalid message id: " + id);
         }
         return msg;
     }

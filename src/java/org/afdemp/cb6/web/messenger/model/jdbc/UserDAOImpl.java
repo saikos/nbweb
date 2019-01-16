@@ -27,7 +27,7 @@ public class UserDAOImpl implements UserDAO {
     public User getUserById(long id) throws MessengerException {
         User user = DatabaseHelper.fetchUserOrNull("select * from user where id = ?", id);
         if (user == null) {
-            throw new RuntimeException("Invalid user id: " + id);
+            throw new MessengerException("Invalid user id: " + id);
         }
         return user;
     }
@@ -36,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
     public User getUser(String username, String password) throws MessengerException {
         User user = DatabaseHelper.fetchUserOrNull("select * from user where name = ? and password = ?", username, password);
         if (user == null) {
-            throw new RuntimeException("Invalid username / password");
+            throw new MessengerException("Invalid username / password");
         }
         return user;
     }        
