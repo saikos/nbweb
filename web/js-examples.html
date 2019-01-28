@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>JS Examples</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>Open developer tools to view the console</div>
+    </body>
+    
+    <script>
+        
+        //let vs var
+        
+        //let has block scope (here, the for block)
+        var callbacks = [];
+        for (let i = 0; i <= 2; i++) {
+            callbacks[i] = function () {
+                return i * 2
+            };
+        }
+        
+        console.log("callbacks[" + 0 + "] = ", callbacks[0]());
+        console.log("callbacks[" + 1 + "] = ", callbacks[1]());
+        console.log("callbacks[" + 2 + "] = ", callbacks[2]());
+
+        //var has function or global scope (here, the global object)
+        var callbacks2 = [];
+        for (var j = 0; j <= 2; j++) {
+            callbacks2[j] = function () {
+                return j * 2
+            };
+        }
+
+        console.log("callbacks2[" + 0 + "] = ", callbacks2[0]());
+        console.log("callbacks2[" + 1 + "] = ", callbacks2[1]());
+        console.log("callbacks2[" + 2 + "] = ", callbacks2[2]());                
+        
+        //arrays
+        let a1 = ["John", "Robert", "Tom"];
+        let a2 = [2, 3, false, "str", {p: 3.14}];        
+        
+        //arrays forEeach
+        let printerLoopLogic = function (v, i, arr) {
+            //console.log("arr[" + i + "]=" + v);
+            //console.log(`arr[${i}]=${v}`);
+            //console.log(`arr[${i}]=`, v);
+            console.log("arr[", i, "]=", v);
+        }
+        a1.forEach(printerLoopLogic);
+        a2.forEach(printerLoopLogic);
+
+        //arrays sort
+        function sortByStringLengthAsc(s1, s2) {
+            let l1 = s1.length;
+            let l2 = s2.length;
+
+            if (l1 < l2) {
+                return -1;
+            }
+
+            if (l1 > l2) {
+                return 1;
+            }
+
+            return 0;
+        }
+        
+        a1.sort(sortByStringLengthAsc);
+        console.log(a1);
+
+        function sortByStringLengthDesc(s1, s2) {
+            return (-1 * sortByStringLengthAsc(s1, s2));
+        }
+
+        a1.sort(sortByStringLengthDesc);
+        console.log(a1);
+
+        //arrays map & reduce
+        function numberOfChars(arr) {
+            let sum = 0;
+            arr.forEach(function (v) {
+                sum = sum + v.length;
+            })
+            return sum;
+        }
+        
+        function lengthOf(str) {
+            return str.length;
+        }
+        
+        function adder(v, sum) {
+            return sum + v;
+        }
+        
+        let lengths = a1.map(lengthOf);
+        console.log(lengths);
+        
+        let sum = lengths.reduce(adder, 0);
+        console.log(sum);
+        
+        console.log(numberOfChars(a1));
+       
+        //anonymous function assigned to a variable
+        var echo = function (msg) {
+            console.log(msg);
+        }
+        //and then invoked
+        echo("Hello world");
+
+        //immediately evaluated function expresions:
+        //define an anonymous function and invoke 
+        //it in place
+        (function (msg) {
+            console.log(msg);
+        })("Hello world");
+
+        //objects
+        let obj = {
+            name: 'Carrot',
+            surname: 'Max',
+            details: {
+                color: 'orange',
+                size: 12
+            }
+        };
+
+        console.log(obj);
+        
+        //accessing object properties (fields)
+        let name = obj.name;
+        const color = obj.details.color;
+        name = obj['name'];
+
+        //constructor function
+        function Person(name) {
+            this.name = name;            
+            this.echo = function () {
+                console.log(this.name);
+            }
+        }
+        //all objects have a prototype
+        Person.prototype.echo2 = function() {
+            console.log(this.name);
+        }
+        
+        
+        function createPerson(name) {
+            return {
+                name: name,
+                echo: function () {
+                    console.log(this.name);
+                }
+            }
+        }
+
+        let p1 = new Person("Kotsos");
+        console.log(p1);
+
+        let p2 = createPerson("Kotsos");
+        console.log(p2);
+        
+        console.log(p1 instanceof Person);
+        console.log(p2 instanceof Person);
+        
+        //always invoke constructors with new
+        let p3 = Person("Kotsos");
+        console.log(p3);
+        //this in Person constructor is the global object
+        //(due to the lack of new)
+        console.log(window.name == "Kotsos");
+        
+        //classes
+        class User {                     
+            
+            constructor(name, surname, birthYear) {
+                this.name = name;
+                this.surname = surname;
+                this.birthYear = birthYear;
+            }            
+            
+            //getter
+            get age() {
+                let now = new Date();
+                return now.getFullYear() - this.birthYear;
+            }
+            
+            //getter
+            get fullname() {
+                return this.surname + ", " + this.name;
+            }
+        }
+        
+        let u = new User("John", "Smith", 1990);
+        console.log(u.name);//invokes the getter
+        console.log(u.fullname);//invokes the getter
+        console.log(u.age);//invokes the getter
+        u.age = 3;//no setter for age
+        console.log(u.age);
+
+        class Employee extends User {//inheritance
+            
+            constructor(name, surname, birthYear, salary) {
+                super(name, surname, birthYear);//call to super constructor
+                //this invokes the setter
+                this.salary = salary;
+            }
+            
+            //getter
+            get salary() {
+                return this._salary;
+            }
+            
+            //setter
+            set salary(newSalary) {
+                if (newSalary < 0) {
+                    throw new Error("Not valid");
+                }
+                else {
+                    this._salary = newSalary;
+                }
+            } 
+            
+            //override method
+            get fullname() {
+                return "Emp: " + super.fullname;
+            }
+
+            //static method
+            static foo() {
+                console.log("Fooo");
+            }
+            
+        }
+        
+        let e = new Employee("Peter", "Smith", 1987, 130000);
+        console.log(e.fullname);//invokes the getter
+        //invoke static method
+        Employee.foo();        
+
+    </script>
+</html>
