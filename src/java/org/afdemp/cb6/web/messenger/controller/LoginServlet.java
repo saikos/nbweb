@@ -10,6 +10,8 @@ import org.afdemp.cb6.web.messenger.MessengerException;
 import org.afdemp.cb6.web.messenger.model.dao.UserDAO;
 import org.afdemp.cb6.web.messenger.model.jdbc.UserDAOImpl;
 import org.afdemp.cb6.web.messenger.model.entity.User;
+import org.afdemp.cb6.web.messenger.view.ForwardToJSPView;
+import org.afdemp.cb6.web.messenger.view.InlineWriteView;
 import org.afdemp.cb6.web.messenger.view.View;
 
 public class LoginServlet extends HttpServlet {
@@ -18,9 +20,10 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        View view = new View(req, resp);
+        View view = new ForwardToJSPView(req, resp);
+                
         try {
+            HttpSession session = req.getSession(false);        
             if (session == null) {
                 view.displayLoginScreen();
             }
@@ -47,7 +50,7 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         
-        View view = new View(req, resp);
+        View view = new ForwardToJSPView(req, resp);
         
         try {            
             User user = userDao.getUser(username, password);
