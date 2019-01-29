@@ -20,6 +20,12 @@
         <servlet-name>echo</servlet-name>
         <servlet-class>org.afdemp.cb6.web.EchoServlet</servlet-class>
     </servlet>
+    
+    <servlet>
+        <!-- Login Servlet -->
+        <servlet-name>login</servlet-name>
+        <servlet-class>org.afdemp.cb6.web.messenger.controller.LoginServlet</servlet-class>
+    </servlet>
 
     <!-- //////////////////// -->
     <!-- Servlet URL Mappings -->
@@ -33,6 +39,11 @@
     <servlet-mapping>
         <servlet-name>echo</servlet-name>
         <url-pattern>/texts/echo</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>login</servlet-name>
+        <url-pattern>/messenger/login.html</url-pattern>
     </servlet-mapping>
 
 </web-app>

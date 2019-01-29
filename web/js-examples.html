@@ -55,6 +55,14 @@ and open the template in the editor.
         }
         a1.forEach(printerLoopLogic);
         a2.forEach(printerLoopLogic);
+        
+        a1.forEach( (v, i, arr) => {
+            console.log("arr[", i, "]=", v);
+        });
+        
+        let printerLoop2 = (v, i, arr) => {
+            console.log("arr[", i, "]=", v);
+        };
 
         //arrays sort
         function sortByStringLengthAsc(s1, s2) {

@@ -14,10 +14,19 @@ import org.afdemp.cb6.web.messenger.model.entity.Role;
 import org.afdemp.cb6.web.messenger.model.entity.User;
 
 class DatabaseHelper {
-    
-    private static final String URL  = "jdbc:mysql://localhost:3306/messenger?serverTimezone=UTC&characterEncoding=utf-8&autoReconnect=true";
+                                      //jdbc:mysql://localhost:3306/
+    private static final String URL  = "jdbc:mysql://localhost:3306/messenger?serverTimezone=UTC&characterEncoding=utf8&autoReconnect=true";
     private static final String USER = "messAdmin";
     private static final String PASS = "messAdmin123";      
+    
+    static {
+        try {
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+        }
+        catch(SQLException sqle) {
+            sqle.printStackTrace(System.out);
+        }
+    }
     
     static User exampleOfProperJdbcHandlingPriorToJava7(String query, long id) throws MessengerException {
         
@@ -127,7 +136,7 @@ class DatabaseHelper {
         }        
     }
     
-    private static Connection openConnection() throws SQLException {               
+    private static Connection openConnection() throws SQLException {                       
         return DriverManager.getConnection(URL, USER, PASS);                       
     }        
     

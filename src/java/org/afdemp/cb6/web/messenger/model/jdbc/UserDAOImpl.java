@@ -38,7 +38,9 @@ public class UserDAOImpl implements UserDAO {
         if (user == null) {
             throw new MessengerException("Invalid username / password");
         }
-        return user;
+        else {
+            return user;
+        }
     }        
 
     @Override
