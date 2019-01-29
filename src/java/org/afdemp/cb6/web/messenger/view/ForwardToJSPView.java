@@ -1,9 +1,11 @@
 package org.afdemp.cb6.web.messenger.view;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.afdemp.cb6.web.messenger.model.entity.Message;
 import org.afdemp.cb6.web.messenger.model.entity.User;
 
 public class ForwardToJSPView extends View {
@@ -39,6 +41,19 @@ public class ForwardToJSPView extends View {
         try {
             req.setAttribute("user", user);
             req.getRequestDispatcher("home.jsp").forward(req, res);
+        }
+        catch(ServletException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void displayMessageList(User user, String type, List<Message> messages) {
+        try {
+            req.setAttribute("user", user);
+            req.setAttribute("type", type);
+            req.setAttribute("messages", messages);
+            req.getRequestDispatcher("messages.jsp").forward(req, res);
         }
         catch(ServletException | IOException e) {
             e.printStackTrace();

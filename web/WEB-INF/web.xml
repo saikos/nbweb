@@ -32,6 +32,12 @@
         <servlet-name>logout</servlet-name>
         <servlet-class>org.afdemp.cb6.web.messenger.controller.LogoutServlet</servlet-class>
     </servlet>
+    
+    <servlet>
+        <!-- Messages Servlet -->
+        <servlet-name>messages</servlet-name>
+        <servlet-class>org.afdemp.cb6.web.messenger.controller.MessageListServlet</servlet-class>
+    </servlet>
 
     <!-- //////////////////// -->
     <!-- Servlet URL Mappings -->
@@ -55,6 +61,11 @@
     <servlet-mapping>
         <servlet-name>logout</servlet-name>
         <url-pattern>/messenger/logout.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>messages</servlet-name>
+        <url-pattern>/messenger/messages.html</url-pattern>
     </servlet-mapping>
 
 </web-app>

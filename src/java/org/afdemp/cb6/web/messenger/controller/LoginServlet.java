@@ -22,26 +22,14 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         View view = new ForwardToJSPView(req, resp);
                 
-        try {
-            HttpSession session = req.getSession(false);        
-            if (session == null) {
-                view.displayLoginScreen();
-            }
-            else {
-                Long id = (Long)session.getAttribute("userId");                
-                if (id == null) {
-                    view.showErrorMessage("Invalid session");
-                }
-                else {
-                    User user = userDao.getUserById(id);
-                    view.displayHomePage(user);
-                }
-            }
+        User user = null;
+        try {            
+            user = ControllerHelper.getLoggedInUser(req, userDao);
+            view.displayHomePage(user);
         }
         catch(MessengerException me) {
-            me.printStackTrace(System.out);
-            view.showErrorMessage(me.getMessage());
-        }
+            view.displayLoginScreen();
+        }            
     }
 
     @Override

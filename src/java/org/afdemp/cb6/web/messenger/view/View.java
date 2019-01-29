@@ -1,8 +1,10 @@
 package org.afdemp.cb6.web.messenger.view;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.afdemp.cb6.web.messenger.model.entity.Message;
 import org.afdemp.cb6.web.messenger.model.entity.User;
 
 public abstract class View {
@@ -25,4 +27,6 @@ public abstract class View {
     public abstract void displayLoginScreen(String errorMessage);
     
     public abstract void displayHomePage(User user);
+    
+    public abstract void displayMessageList(User user, String type, List<Message> messages);
 }
