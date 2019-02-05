@@ -11,6 +11,7 @@
         <h1>Home page</h1>
         <% User user = (User) request.getAttribute("user"); %>
         Welcome <%= user.getName()%>
+        <p><a href="messages.html">Messages</a></p>
         <p><a href="logout.html">Logout</a></p>
     </body>
 </html>
