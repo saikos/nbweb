@@ -149,9 +149,8 @@
             };
             
             $(document).ready( () => {
-                <!-- This demonstrates how you can implement
-                     client-side i18n support.
-                -->
+                //This demonstrates how you can implement
+                //client-side i18n support.                
                 $.ajax({
                     url: 'http://localhost:8080/WebApp/static/texts.json',
                     dataType: 'json',                       
