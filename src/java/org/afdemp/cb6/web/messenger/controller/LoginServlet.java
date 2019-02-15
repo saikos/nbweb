@@ -11,7 +11,6 @@ import org.afdemp.cb6.web.messenger.model.dao.UserDAO;
 import org.afdemp.cb6.web.messenger.model.jdbc.UserDAOImpl;
 import org.afdemp.cb6.web.messenger.model.entity.User;
 import org.afdemp.cb6.web.messenger.view.ForwardToJSPView;
-import org.afdemp.cb6.web.messenger.view.InlineWriteView;
 import org.afdemp.cb6.web.messenger.view.View;
 
 public class LoginServlet extends HttpServlet {
@@ -20,11 +19,11 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        View view = new ForwardToJSPView(req, resp);
+        View view = new ForwardToJSPView(this.getServletConfig(), req, resp);
                 
         User user = null;
         try {            
-            user = ControllerHelper.getLoggedInUser(req, userDao);
+            user = ControllerHelper.getLoggedInUserFromCookie(req, userDao);
             view.displayHomePage(user);
         }
         catch(MessengerException me) {
@@ -38,12 +37,15 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         
-        View view = new ForwardToJSPView(req, resp);
+        View view = new ForwardToJSPView(this.getServletConfig(), req, resp);       
         
         try {            
+            view.prepareI18N();
+            
             User user = userDao.getUser(username, password);
             HttpSession session = req.getSession(true);
             session.setAttribute("userId", user.getId());
+            session.setAttribute("lang", "el");
             view.displayHomePage(user);            
         }
         catch(MessengerException me) {

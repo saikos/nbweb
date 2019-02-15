@@ -3,6 +3,7 @@ package org.afdemp.cb6.web.messenger.view;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.afdemp.cb6.web.messenger.model.entity.Message;
@@ -10,8 +11,8 @@ import org.afdemp.cb6.web.messenger.model.entity.User;
 
 public class InlineWriteView extends View {        
     
-    public InlineWriteView(HttpServletRequest req, HttpServletResponse res) {
-        super(req, res);
+    public InlineWriteView(ServletConfig config, HttpServletRequest req, HttpServletResponse res) {
+        super(config, req, res);
     }
     
     @Override

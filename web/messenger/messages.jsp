@@ -2,12 +2,13 @@
 <%@page import="java.util.List" %>
 <%@page import="org.afdemp.cb6.web.messenger.model.entity.User" %>
 <%@page import="org.afdemp.cb6.web.messenger.model.entity.Message" %>
+<%@page import="org.afdemp.cb6.web.messenger.view.I18N" %>
 <%@page session="false" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Messages Page</title>
+        <title class="message_title"></title>
         <link rel="stylesheet" 
               href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
               integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
@@ -22,6 +23,7 @@
     <body>
                 
         <% 
+        I18N i18n = (I18N) request.getAttribute("i18n");
         User user = (User) request.getAttribute("user");
         String type = (String) request.getAttribute("type");
         List<Message> messages = (List<Message>) request.getAttribute("messages");                
@@ -35,6 +37,11 @@
                         <%= user.getName() %> 
                         -
                         <%= type %>
+                        
+                        <!-- This demonstrates how you can implement
+                             server-side i18n support.
+                        -->
+                        <%= i18n.translate("messages_title", "el") %>
                     </h1>
                 </div>
             </div>
@@ -80,7 +87,7 @@
                         <td><%= m.getText() %></td>
                         <td> 
                             <button type="button" class="btn btn-danger deleteMessageButton" data-id="<%= m.getId() %>" data-when="<%= m.getWhen() %>" data-text="<%= m.getText() %>">
-                                Delete
+                                <span class="messages_delete"></span>
                             </button>                                                        
                         </td>
                       </tr>                      
@@ -134,9 +141,38 @@
       
         <script>
             let name = "<%= user.getName()%>";
-            //alert(name);                        
-                        
+            //alert(name);               
+            let i18nInfo = {
+                defaultLanguage: "en",
+                supportedLanguages: ["el", "en"],
+                texts: null
+            };
+            
             $(document).ready( () => {
+                <!-- This demonstrates how you can implement
+                     client-side i18n support.
+                -->
+                $.ajax({
+                    url: 'http://localhost:8080/WebApp/static/texts.json',
+                    dataType: 'json',                       
+                    type: 'GET',
+                    async: true
+               }).done ( (data) => {
+                   //data is the ready-made parsed JSON content
+                   //that can be utilized as an ordinary JS object
+                   console.log("Updating texts field");
+                   i18nInfo.texts = data;
+                   console.log(i18nInfo);
+                   for (prop in i18nInfo.texts) {
+                       //console.log(i18nInfo.texts[prop][i18nInfo.defaultLanguage]);
+                       let valueOfProp = i18nInfo.texts[prop];
+                       let greLabel = valueOfProp.el;
+                       let engLabel = valueOfProp.en;
+                       let label = valueOfProp[i18nInfo.defaultLanguage];
+                       console.log(prop, " = ", label);
+                       $("." + prop).text(label);
+                   }
+               });
                 
                 let selectedMessageForDeletion = {
                    "id": null,
@@ -196,10 +232,7 @@
                    
                    $.ajax({
                         url: 'http://localhost:8080/WebApp/hello.txt',
-                        dataType: 'text',
-                        data: {
-                            id:"333";
-                        }
+                        dataType: 'text',                       
                         type: 'GET',
                         async: true
                    }).done ( (data) => {

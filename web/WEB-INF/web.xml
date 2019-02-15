@@ -9,6 +9,12 @@
     <display-name>Web App</display-name>
     <description>WebApp description</description>
     
+    <context-param>
+        <!-- This parameter is available to all servlets -->
+        <param-name>textsPath</param-name>
+        <param-value>c:\\saiko\\projects\\peoplecert\\cb6\\nbweb\\web\\static\\texts.json</param-value>
+    </context-param>
+    
     <servlet>
         <!-- Example Servlet -->
         <servlet-name>hello</servlet-name>
@@ -37,8 +43,13 @@
         <!-- Messages Servlet -->
         <servlet-name>messages</servlet-name>
         <servlet-class>org.afdemp.cb6.web.messenger.controller.MessageListServlet</servlet-class>
+        <init-param>
+            <!-- This param is available only to the messages servlet -->
+            <param-name>textsPath</param-name>
+            <param-value>c:\\saiko\\projects\\peoplecert\\cb6\\nbweb\\web\\static\\texts.json</param-value>
+        </init-param>
     </servlet>
-
+        
     <!-- //////////////////// -->
     <!-- Servlet URL Mappings -->
     <!-- //////////////////// -->

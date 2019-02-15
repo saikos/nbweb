@@ -5,11 +5,10 @@ import javax.servlet.http.HttpSession;
 import org.afdemp.cb6.web.messenger.MessengerException;
 import org.afdemp.cb6.web.messenger.model.dao.UserDAO;
 import org.afdemp.cb6.web.messenger.model.entity.User;
-import org.afdemp.cb6.web.messenger.model.jdbc.UserDAOImpl;
 
 public class ControllerHelper {
 
-    static User getLoggedInUser(HttpServletRequest req, UserDAO userDao) throws MessengerException {        
+    static User getLoggedInUserFromCookie(HttpServletRequest req, UserDAO userDao) throws MessengerException {        
         HttpSession session = req.getSession(false);        
         if (session == null) {
             throw new MessengerException("Not authorized");
@@ -20,5 +19,5 @@ public class ControllerHelper {
         }
         return userDao.getUserById(id);        
     }
-    
+            
 }

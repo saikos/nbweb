@@ -1,0 +1,14 @@
+{
+    "messages_title": {
+        "el": "Σελίδα Μηνυμάτων",
+        "en": "Messages Page"
+    },
+    "messages_send": {
+        "el": "Αποστολή",
+        "en": "Send"
+    },
+    "messages_delete": {
+        "el": "Διαγραφή",
+        "en": "Delete"
+    }
+}

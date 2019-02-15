@@ -2,6 +2,7 @@ package org.afdemp.cb6.web.messenger.view;
 
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,8 +11,8 @@ import org.afdemp.cb6.web.messenger.model.entity.User;
 
 public class ForwardToJSPView extends View {
     
-    public ForwardToJSPView(HttpServletRequest req, HttpServletResponse res) {
-        super(req, res);
+    public ForwardToJSPView(ServletConfig config, HttpServletRequest req, HttpServletResponse res) {
+        super(config, req, res);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ForwardToJSPView extends View {
     
     @Override
     public void displayMessageList(User user, String type, List<Message> messages) {
-        try {
+        try {                                    
             req.setAttribute("user", user);
             req.setAttribute("type", type);
             req.setAttribute("messages", messages);
@@ -59,4 +60,6 @@ public class ForwardToJSPView extends View {
             e.printStackTrace();
         }
     }
+    
+    
 }

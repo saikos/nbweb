@@ -2,6 +2,7 @@ package org.afdemp.cb6.web.messenger.controller;
 
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,19 +17,29 @@ import org.afdemp.cb6.web.messenger.model.jdbc.UserDAOImpl;
 import org.afdemp.cb6.web.messenger.view.ForwardToJSPView;
 import org.afdemp.cb6.web.messenger.view.View;
 
-public class MessageListServlet extends HttpServlet {        
+public class MessageListServlet extends HttpServlet {
     
     public static final String TYPE_INBOX = "inbox";
     public static final String TYPE_SENT  = "sent";
+        
+    //Override this method if you need access to the specific
+    //servlet's init parameters
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config); 
+        //Read the init paramter(s) here, for example: 
+        //String textsPath = config.getInitParameter(Constants.TEXTS_PATH_INIT_PARAM_NAME);
+    }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {               
         
-        View view = new ForwardToJSPView(req, resp);
+        View view = new ForwardToJSPView(this.getServletConfig(), req, resp);
         
         try {
-            User user = ControllerHelper.
-                    getLoggedInUser(req, new UserDAOImpl());
+            view.prepareI18N();
+            
+            User user = ControllerHelper.getLoggedInUserFromCookie(req, new UserDAOImpl());
 
             String type = req.getParameter("type");
             if (type == null) {
