@@ -15,6 +15,21 @@
         <param-value>c:\\saiko\\projects\\peoplecert\\cb6\\nbweb\\web\\static\\texts.json</param-value>
     </context-param>
     
+    <context-param>        
+        <param-name>jdbcURL</param-name>
+        <param-value>jdbc:mysql://localhost:3306/messenger?serverTimezone=UTC&amp;characterEncoding=utf8&amp;autoReconnect=true</param-value>
+    </context-param>
+    
+    <context-param>        
+        <param-name>jdbcUser</param-name>
+        <param-value>messAdmin</param-value>
+    </context-param>
+    
+    <context-param>        
+        <param-name>jdbcPass</param-name>
+        <param-value>messAdmin123</param-value>
+    </context-param>
+    
     <servlet>
         <!-- Example Servlet -->
         <servlet-name>hello</servlet-name>
@@ -78,5 +93,9 @@
         <servlet-name>messages</servlet-name>
         <url-pattern>/messenger/messages.html</url-pattern>
     </servlet-mapping>
+
+    <listener>
+        <listener-class>org.afdemp.cb6.web.messenger.MessengerContextListener</listener-class>
+    </listener>
 
 </web-app>

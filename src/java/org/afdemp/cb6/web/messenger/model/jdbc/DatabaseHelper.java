@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.afdemp.cb6.web.messenger.MessengerConfig;
 import org.afdemp.cb6.web.messenger.MessengerException;
 import org.afdemp.cb6.web.messenger.model.entity.Message;
 import org.afdemp.cb6.web.messenger.model.entity.Role;
@@ -137,7 +138,12 @@ class DatabaseHelper {
     }
     
     private static Connection openConnection() throws SQLException {                       
-        return DriverManager.getConnection(URL, USER, PASS);                       
+        MessengerConfig cfg = MessengerConfig.getInstance();        
+        return DriverManager.getConnection(
+            cfg.getProperty("jdbcURL"), 
+            cfg.getProperty("jdbcUser"), 
+            cfg.getProperty("jdbcPass")
+        );                       
     }        
     
     private static User fetchUserOrNull(PreparedStatement ps) throws SQLException, MessengerException {

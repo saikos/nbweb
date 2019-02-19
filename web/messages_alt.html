@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Messages</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" 
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        
+        <div id="koDiv">
+            <h1 data-bind="text:title"></h1>
+            <button class="btn btn-primary" 
+                    data-bind="click:buttonClick">
+                Click me
+            </button>
+            
+            <p data-bind="if:ajaxText() === null">
+                Please click <a href="#" data-bind="click:fetchAjaxText">here</a> to fetch an AJAX call
+            </p>
+            <p data-bind="if:ajaxText() !== null">
+                <span data-bind="text:ajaxText"></span>
+            </p>
+            
+            <div class="alert alert-info">I DO NO DATA BIND!</div>
+        </div>        
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" ></script>
+        
+        <script src="static/js/knockout-3.4.2.js"></script>
+        
+        <script>
+            console.log("Test");
+            
+            class ViewModel {
+                constructor() {
+                    this.title = ko.observable("Messages");
+                    this.ajaxText = ko.observable(null);
+                }
+                
+                buttonClick() {
+                    let title = this.title();
+                    console.log("Button clicked with title: ", title);
+                    this.title("Hell, yeah!");                    
+                }
+                
+                fetchAjaxText() {
+                    $.ajax({
+                        url: 'http://localhost:8080/WebApp/hello.txt',
+                        dataType: 'text',                       
+                        type: 'GET',
+                        async: true
+                   }).done ( (data) => {
+                       console.log("Updating UI");
+                       this.ajaxText(data);
+                   });
+                }
+            }
+            
+            let viewModel = new ViewModel();            
+            /*
+            let viewModel = {
+                title: ko.observable("foo")
+            };
+            */
+            ko.applyBindings(viewModel, document.getElementById('koDiv'));
+        </script>
+    </body>
+</html>
