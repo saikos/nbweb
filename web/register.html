@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" 
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        
+        <div class="container border border-dark">
+            
+            <div class="row border border-info p-3 mt-5" id="koDiv"> 
+                
+                <div class="col-6 offset-3 p-3 border border-primary">
+                    <h1>Register</h1>
+                     <form method="post" data-bind="submit:validate" action="messenger/login.html">
+                         <div class="form-group">
+                             <label for="email">Email address</label>
+                             <input type="email" class="form-control" id="email" placeholder="Enter email" data-bind="value:email">                    
+                         </div>
+                         <div class="form-group">
+                             <label for="password">Password</label>
+                             <input type="password" class="form-control" id="password" placeholder="Enter password" data-bind="value:pass">                    
+                         </div>
+                         <div class="form-group">
+                             <label for="repeatPassword">Repeat Password</label>
+                             <input type="password" class="form-control" id="repeatPassword" placeholder="Re-enter password" data-bind="value:repPass">                    
+                         </div>
+                         
+                         <div class="alert alert-info" data-bind="visible:error() === true">
+                             <span data-bind="text:errorMessage"></span>
+                         </div>
+                         
+                         <button type="submit" class="btn btn-primary">
+                             Register
+                         </button>
+                     </form>        
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" ></script>
+        
+        <script src="static/js/knockout-3.4.2.js"></script>
+        
+        <script>
+            console.log("Test");
+            
+            class ViewModel {                                
+                
+                constructor() {
+                    this.email   = ko.observable(null);
+                    this.pass    = ko.observable(null);
+                    this.repPass = ko.observable(null);
+                    
+                    this.error   = ko.observable(false);
+                    this.errorMessage = ko.observable(null);
+                }
+                
+                validate() {
+                    console.log("Validate: ", this.pass(), " === ", this.repPass());                    
+                    if (this.pass() === this.repPass()) {
+                        this.errorMessage(null);
+                        this.error(false);
+                        return true;
+                    }
+                    else {
+                        console.log("NOT");
+                        this.errorMessage("Passwords do not match");
+                        this.error(true);
+                    }
+                    
+                }
+                
+            }
+            
+            let viewModel = new ViewModel();                        
+            ko.applyBindings(viewModel, document.getElementById('koDiv'));
+        </script>
+    </body>
+</html>
