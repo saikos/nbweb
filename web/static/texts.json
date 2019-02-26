@@ -10,5 +10,12 @@
     "messages_delete": {
         "el": "Διαγραφή",
         "en": "Delete"
-    }
+    },
+    "asxeto": [
+        1, false, null, "foo"
+    ],
+    "panasxeto": [
+        {"name": "Name", "surname": "Surname", "active":false, "age": 32},
+        {"name": "Name 2", "surname": "Surname 2", "active":true, "age": 22}
+    ]
 }

@@ -137,6 +137,72 @@ class DatabaseHelper {
         }        
     }
     
+    static long getUserIdOfToken(String token) throws MessengerException {
+        String query = "select userid from token where uuid = ?";
+        try (Connection con = openConnection();
+             PreparedStatement ps = con.prepareStatement(query);
+        ) {
+          ps.setString(1, token);          
+          ResultSet rs = ps.executeQuery();
+          if (rs.next()) {
+              return rs.getLong(1);
+          }
+          else {
+              throw new MessengerException("Invalid token");
+          }
+        }
+        catch(SQLException e) {
+            //log the error
+            throw new MessengerException(e.getMessage(), e);
+        }
+    }
+    
+    static void touchToken(String token) throws MessengerException {
+        String query = "update token set lastAccessTime = default where uuid = ?";
+        try (Connection con = openConnection();
+             PreparedStatement ps = con.prepareStatement(query);
+        ) {
+          ps.setString(1, token);          
+          int rows = ps.executeUpdate();
+          if (rows != 1) {              
+              throw new MessengerException("Invalid token");
+          }
+        }
+        catch(SQLException e) {
+            //log the error
+            throw new MessengerException(e.getMessage(), e);
+        }
+    }
+    
+    static void createToken(String uuid, User user) throws MessengerException {        
+        createToken(
+            "insert into token values(?, ?, default)",
+            uuid,
+            user.getId()
+        );
+    }
+    
+    private static void createToken(String query, String uuid, long userId) throws MessengerException {
+        try (Connection con = openConnection();
+             PreparedStatement ps = con.prepareStatement(query);
+        ) {
+          ps.setString(1, uuid);
+          ps.setLong(2, userId);
+          int rows = ps.executeUpdate();
+          if (rows != 1) {
+              throw new MessengerException("Insertion failed");
+          }
+        }
+        catch(SQLException e) {
+            //log the error
+            throw new MessengerException(e.getMessage(), e);
+        }        
+        catch(MessengerException me) {
+            //log the error
+            throw me;
+        }
+    }
+    
     private static Connection openConnection() throws SQLException {                       
         MessengerConfig cfg = MessengerConfig.getInstance();        
         return DriverManager.getConnection(

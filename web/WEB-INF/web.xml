@@ -65,6 +65,18 @@
         </init-param>
     </servlet>
         
+    <servlet>
+        <!-- Users API Servlet -->
+        <servlet-name>api_users</servlet-name>
+        <servlet-class>org.afdemp.cb6.web.messenger.api.UserListAPI</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <!-- Login API Servlet -->
+        <servlet-name>api_login</servlet-name>
+        <servlet-class>org.afdemp.cb6.web.messenger.api.LoginAPI</servlet-class>
+    </servlet>
+        
     <!-- //////////////////// -->
     <!-- Servlet URL Mappings -->
     <!-- //////////////////// -->
@@ -92,6 +104,16 @@
     <servlet-mapping>
         <servlet-name>messages</servlet-name>
         <url-pattern>/messenger/messages.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>api_users</servlet-name>
+        <url-pattern>/api/users</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>api_login</servlet-name>
+        <url-pattern>/api/login</url-pattern>
     </servlet-mapping>
 
     <listener>

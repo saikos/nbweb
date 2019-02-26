@@ -10,6 +10,7 @@
     <body>
         
         <div id="koDiv">
+            <!--
             <h1 data-bind="text:title"></h1>
             <button class="btn btn-primary" 
                     data-bind="click:buttonClick">
@@ -23,7 +24,40 @@
                 <span data-bind="text:ajaxText"></span>
             </p>
             
-            <div class="alert alert-info">I DO NO DATA BIND!</div>
+            <div class="alert alert-info">Look, Mam, NO DATA BIND!</div>
+            -->
+            <div data-bind="visible:isLoggedIn() === false">
+                <form method="post" data-bind="submit:doLogin">
+                    <input type="text" name="username" data-bind="value:username"/>
+                    <input type="password" name="password" data-bind="value:password" />
+                    <button type="submit" class="btn btn-primary">
+                        Login
+                    </button>
+                </form>
+            </div>
+            
+            <div data-bind="visible:isLoggedIn() === true">
+                <p>
+                    Welcome 
+                    <span data-bind="text:username"></span>
+                    <small class="text-muted"><span data-bind="text:role"></span></small>
+                </p>
+                
+                <button data-bind="click:getUsers" class="btn btn-primary">
+                    Get users
+                </button>
+                
+                <div data-bind="visible:users().length > 0">
+                    <ul data-bind="foreach:users">
+                        <li>
+                            <span data-bind="text:name"></span> 
+                            - 
+                            <span data-bind="text:role"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
         </div>        
         
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -35,10 +69,17 @@
         <script>
             console.log("Test");
             
+            
             class ViewModel {
                 constructor() {
                     this.title = ko.observable("Messages");
                     this.ajaxText = ko.observable(null);
+                    this.username = ko.observable(null);
+                    this.password = ko.observable(null);
+                    this.isLoggedIn = ko.observable(false);
+                    this.role = ko.observable(null);
+                    this.users = ko.observableArray(null);
+                    this.token = null;
                 }
                 
                 buttonClick() {
@@ -57,6 +98,41 @@
                        console.log("Updating UI");
                        this.ajaxText(data);
                    });
+                }
+                
+                doLogin() {                    
+                    $.ajax({
+                        url: 'http://localhost:8080/WebApp/api/login',
+                        dataType: 'json',                       
+                        type: 'POST',         
+                        data: {
+                            username: this.username(),
+                            password: this.password()
+                        }
+                    }).done( (json) => {
+                        console.log("Successful login");
+                        console.log(json);
+                        this.token = json.token;
+                        this.role(json.role);
+                        this.isLoggedIn(true);
+                    }).catch( function(e){
+                        alert(e);
+                    });
+                }
+                
+                getUsers() {
+                    $.ajax({
+                        url: 'http://localhost:8080/WebApp/api/users',
+                        dataType: 'json',                       
+                        type: 'GET',         
+                        headers: {'X-MSG-AUTH': this.token }
+                    }).done( (json) => {
+                        console.log("Fetched users");
+                        console.log(json);
+                        this.users(json);
+                    }).catch( function(e){
+                        alert(e);
+                    });
                 }
             }
             
