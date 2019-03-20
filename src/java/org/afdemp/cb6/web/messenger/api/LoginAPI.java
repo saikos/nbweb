@@ -25,7 +25,7 @@ public class LoginAPI extends HttpServlet {
         try {
             User user = userDao.getUser(username, password);
             String token = tokenDao.createToken(user);
-
+            resp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             resp.setContentType("application/json; charset=utf-8");
 
             JsonHelper.writeJson(resp.getWriter(), "token", token);
